@@ -2,49 +2,56 @@
 
 #include "TextualRepresentation.hpp"
 
-TextualRepresentation::TextualRepresentation(int val, const std::string &text) : value(val), textRepresentation(text)
+TextualRepresentation::TextualRepresentation(int val, const std::string &text)
+    : value(val), textRepresentation(text) {}
+
+TextualRepresentation::TextualRepresentation(const TextualRepresentation &other)
+    : value(other.value), textRepresentation(other.textRepresentation) {}
+
+TextualRepresentation::TextualRepresentation(
+    TextualRepresentation &&other) noexcept
+    : value(other.value),
+      textRepresentation(std::move(other.textRepresentation)) {}
+
+TextualRepresentation::~TextualRepresentation() {}
+
+TextualRepresentation &
+TextualRepresentation::operator=(const TextualRepresentation &other)
 {
-    std::cout << "Basic Constructor" << std::endl;
+  if (this != &other)
+  {
+    value = other.value;
+    textRepresentation = other.textRepresentation;
+  }
+  return *this;
 }
 
-TextualRepresentation::TextualRepresentation(const TextualRepresentation &other) : value(other.value), textRepresentation(other.textRepresentation)
+TextualRepresentation &
+TextualRepresentation::operator=(TextualRepresentation &&other) noexcept
 {
-    std::cout << "Copy Constructor" << std::endl;
+  if (this != &other)
+  {
+    value = other.value;
+    textRepresentation = std::move(other.textRepresentation);
+  }
+  return *this;
 }
 
-TextualRepresentation::TextualRepresentation(TextualRepresentation &&other) noexcept : value(other.value), textRepresentation(std::move(other.textRepresentation))
+bool TextualRepresentation::operator<(TextualRepresentation &other)
 {
-    std::cout << "Move Constructor" << std::endl;
+  return this->getValue() < other.getValue();
 }
 
-TextualRepresentation::~TextualRepresentation()
+bool TextualRepresentation::operator>(TextualRepresentation &other)
 {
-    std::cout << "Basic Destructor" << std::endl;
+  return this->getValue() > other.getValue();
 }
-
-TextualRepresentation &TextualRepresentation::operator=(const TextualRepresentation &other)
+bool TextualRepresentation::operator==(TextualRepresentation &other)
 {
-    std::cout << "Copy assignment" << std::endl;
-    if (this != &other)
-    {
-        value = other.value;
-        textRepresentation = other.textRepresentation;
-    }
-    return *this;
-}
-
-TextualRepresentation &TextualRepresentation::operator=(TextualRepresentation &&other) noexcept
-{
-    std::cout << "Move assignment" << std::endl;
-    if (this != &other)
-    {
-        value = other.value;
-        textRepresentation = std::move(other.textRepresentation);
-    }
-    return *this;
+  return this->getValue() == other.getValue();
 }
 
 void TextualRepresentation::print() const
 {
-    std::cout << value << " - " << textRepresentation << std::endl;
+  std::cout << value << " - " << textRepresentation << std::endl;
 }
